@@ -1,0 +1,27 @@
+nginx:
+  build: ./nginx
+  ports:
+    - "80:80"
+  links:
+    - "php-fpm"
+  volumes:
+    - /workspace/workspace/php/:/var/www/html/
+    - /workspace/workspace/docker/phpenv/nginx/conf/:/etc/nginx/conf.d/
+
+php-fpm:
+  build: ./php-fpm
+  ports:
+    - "9000:9000"
+  volumes:
+    - ./code/:/var/www/html/
+  links:
+    - "mysql"
+
+mysql:
+  build: ./mysql
+  ports:
+    - "3306:3306"
+  volumes:
+    - /workspace/workspace/docker/phpenv/mysql/data/:/var/lib/mysql/
+  environment:
+    MYSQL_ROOT_PASSWORD: 123456
